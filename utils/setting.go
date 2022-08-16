@@ -7,15 +7,20 @@ import (
 )
 
 var (
-	AppMode  string
-	HttpPort string
-
+	AppMode    string
+	HttpPort   string
+	JwtKey     string
 	Db         string
 	DbHost     string
 	DbPort     string
 	DbUser     string
 	DbPassport string
 	DbName     string
+
+	AccessKey   string
+	SecretKey   string
+	Bucket      string
+	QiLiuServer string
 )
 
 func init() {
@@ -26,12 +31,14 @@ func init() {
 	}
 	LoadServer(file)
 	LoadDatabase(file)
+	LoadQiLiu(file)
 }
 
 func LoadServer(file *ini.File) {
 	sec := file.Section("server")
 	AppMode = sec.Key("AppMode").MustString("debug")
 	HttpPort = sec.Key("HttpPort").MustString(":3000")
+	JwtKey = sec.Key("JwtKey").MustString("89js82js72")
 }
 
 func LoadDatabase(file *ini.File) {
@@ -42,4 +49,12 @@ func LoadDatabase(file *ini.File) {
 	DbUser = sec.Key("DbUser").MustString("root")
 	DbPassport = sec.Key("DbPassport").MustString("root")
 	DbName = sec.Key("Dbname").MustString("myGoBlog")
+}
+
+func LoadQiLiu(file *ini.File) {
+	sec := file.Section("QiLiu")
+	AccessKey = sec.Key("AccessKey").String()
+	SecretKey = sec.Key("SecretKey").String()
+	Bucket = sec.Key("Bucket").String()
+	QiLiuServer = sec.Key("QiLiuServer").String()
 }

@@ -2,23 +2,46 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"goBlog/utils"
-	"net/http"
+	v1 "goBlog/api/v1"
+	"goBlog/midderware"
 )
 
 func InitRoute() {
 	gin.SetMode("debug")
-	router := gin.Default()
+	r := gin.New()
+	r.Use(midderware.Logger())
+	r.Use(midderware.Cors())
+	r.Use(gin.Recovery())
 
-	v1Group := router.Group("api/v1")
+	auth := r.Group("api/v1")
+	auth.Use(midderware.JwtToken())
 	{
-		v1Group.GET("hello", func(context *gin.Context) {
-			context.JSON(http.StatusOK, gin.H{
-				"msg": "ok",
-			})
-		})
-	}
+		//User模块路由
 
-	router.Run(utils.HttpPort)
+		auth.PUT("user/:id", v1.EditUser)
+		auth.DELETE("user/:id", v1.DeleteUser)
+		//Article模块路由
+		auth.POST("article/add", v1.AddArticle)
+		auth.PUT("article/:id", v1.EditArticle)
+		auth.DELETE("article/:id", v1.DeleteArticle)
+
+		//Category模块路由
+		auth.POST("category/add", v1.AddCategory)
+		auth.PUT("category/:id", v1.EditCategory)
+		auth.DELETE("category/:id", v1.DeleteCategory)
+		//上传文件
+		auth.POST("upload", v1.UpLoad)
+	}
+	router := r.Group("api/v1")
+	{
+		router.POST("user/add", v1.AddUser)
+		router.GET("users", v1.GetUsers)
+		router.GET("article", v1.GetArticle)
+		router.GET("article/list/:id", v1.GetAllArticle)
+		router.GET("article/:id", v1.GetArticleInfo)
+		router.GET("category", v1.GetCategory)
+		router.POST("login", v1.Login)
+	}
+	r.Run(":8080")
 
 }

@@ -1,0 +1,7 @@
+time="2022-08-15 23:33:46" level=error Agent=PostmanRuntime/7.29.2 DataSize=0 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="11 ms" status=500
+time="2022-08-15 23:37:00" level=error Agent=PostmanRuntime/7.29.2 DataSize=0 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="4 ms" status=500
+time="2022-08-15 23:44:44" level=error Agent=PostmanRuntime/7.29.2 DataSize=0 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="2 ms" status=500
+time="2022-08-15 23:45:11" level=error Agent=PostmanRuntime/7.29.2 DataSize=0 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="6 ms" status=500
+time="2022-08-15 23:47:30" level=error Agent=PostmanRuntime/7.29.2 DataSize=0 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="5 ms" status=500
+time="2022-08-15 23:48:16" level=info Agent=PostmanRuntime/7.29.2 DataSize=66 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="0 ms" status=200
+time="2022-08-15 23:48:32" level=info Agent=PostmanRuntime/7.29.2 DataSize=53 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/user/add SpendTime="0 ms" status=200

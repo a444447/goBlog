@@ -42,6 +42,6 @@ func InitRoute() {
 		router.GET("category", v1.GetCategory)
 		router.POST("login", v1.Login)
 	}
-	r.Run(":8080")
+	r.Run(":3000")
 
 }

@@ -48,13 +48,24 @@ func AddUser(c *gin.Context) {
 	})
 }
 
-// 查询单个用户
+// GetUserInfo 查询单个用户
+func GetUserInfo(c *gin.Context) {
+	var id int
+	id, _ = strconv.Atoi(c.Param("id"))
+	data, code := model.GetSingleUser(id)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
 
 // GetUsers 查询用户列表
 func GetUsers(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
-	data, total := model.GetUsers(pageSize, pageNum)
+	userName := c.Query("userName")
+	data, total := model.GetUsers(userName, pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  errmsg.SUCCESS,
 		"data":    data,
@@ -79,7 +90,7 @@ func EditUser(c *gin.Context) {
 	var data model.User
 	id, _ := strconv.Atoi(c.Param("id"))
 	c.ShouldBindJSON(&data)
-	code := model.CheckUser(data.Username)
+	code := model.CheckUpUser(id, data.Username)
 	if code == errmsg.SUCCESS {
 		model.EditUser(id, &data)
 	}
@@ -90,4 +101,9 @@ func EditUser(c *gin.Context) {
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),
 	})
+}
+
+// ChangePassword 改变用户密码
+func ChangePassword(c *gin.Context) {
+
 }

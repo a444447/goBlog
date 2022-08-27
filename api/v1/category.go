@@ -33,7 +33,17 @@ func AddCategory(c *gin.Context) {
 	})
 }
 
-// 查询单个用户
+// GetCategoryInfo 查询单个分类
+func GetCategoryInfo(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	data, code := model.GetSingleCategory(id)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"message": errmsg.GetErrMsg(code),
+	})
+
+}
 
 // GetCategory 查询分类列表
 func GetCategory(c *gin.Context) {
@@ -64,11 +74,11 @@ func EditCategory(c *gin.Context) {
 	var data model.Category
 	id, _ := strconv.Atoi(c.Param("id"))
 	c.ShouldBindJSON(&data)
-	code := model.CheckCategory(data.Name)
+	code := model.CheckUpCategory(id, data.Name)
 	if code == errmsg.SUCCESS {
 		model.EditCategory(id, &data)
 	}
-	if code == errmsg.ErrorUsernameUsed {
+	if code == errmsg.ErrorCategoryUsed {
 		c.Abort() //阻止调用后续函数，与之对应的就是c.next()
 	}
 	c.JSON(http.StatusOK, gin.H{

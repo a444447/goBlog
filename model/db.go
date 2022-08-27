@@ -24,7 +24,7 @@ func InitDB() {
 		fmt.Errorf("fail to connect database！")
 	}
 
-	db.AutoMigrate(&User{}, &Article{}, &Category{})
+	db.AutoMigrate(&User{}, &Article{}, &Category{}, &Profile{})
 
 	//设置数据库允许的最大连接数
 	sqlDB, err := db.DB()

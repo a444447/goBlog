@@ -21,6 +21,19 @@ func CheckCategory(name string) (code int) {
 	return errmsg.SUCCESS
 }
 
+// CheckUpCategory 允许修改分类的时候不修改名字, 并且如果修改的名字已经存在报错
+func CheckUpCategory(id int, name string) int {
+	var category Category
+	db.Select("id").Where("name = ?", name).First(&category)
+	if category.ID == uint(id) {
+		return errmsg.SUCCESS
+	}
+	if category.ID > 0 {
+		return errmsg.ErrorCategoryUsed
+	}
+	return errmsg.SUCCESS
+}
+
 // CreateCategory 新增分类
 func CreateCategory(data *Category) int {
 	err := db.Create(&data).Error
@@ -28,6 +41,16 @@ func CreateCategory(data *Category) int {
 		return errmsg.ERROR
 	}
 	return errmsg.SUCCESS
+}
+
+// GetSingleCategory 获得单个分类列表
+func GetSingleCategory(id int) (Category, int) {
+	var category Category
+	err := db.Where("id = ?", id).First(&category).Error
+	if err != nil {
+		return category, errmsg.ERROR
+	}
+	return category, errmsg.SUCCESS
 }
 
 // GetCategory 查询分类列表

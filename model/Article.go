@@ -13,7 +13,7 @@ type Article struct {
 	Cid      int      `gorm:"type: int;not null;" json:"cid"'`
 	Desc     string   `gorm:"type: varchar(200);" json:"desc"` //表示describe
 	Content  string   `gorm:"type:longtext;" json:"content""`
-	Img      string   `gorm:"type:varchar(100);" json:"img"`
+	Img      string   `gorm:"type:varchar(300);" json:"img"`
 }
 
 // CheckUser 查询用户是否存在

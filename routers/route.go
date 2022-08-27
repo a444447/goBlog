@@ -31,16 +31,22 @@ func InitRoute() {
 		auth.DELETE("category/:id", v1.DeleteCategory)
 		//上传文件
 		auth.POST("upload", v1.UpLoad)
+		//获得个人信息
+		auth.PUT("profile/:id", v1.UpdateProfile)
 	}
 	router := r.Group("api/v1")
 	{
 		router.POST("user/add", v1.AddUser)
 		router.GET("users", v1.GetUsers)
+		router.GET("user/:id", v1.GetUserInfo)
 		router.GET("article", v1.GetArticle)
 		router.GET("article/list/:id", v1.GetAllArticle)
 		router.GET("article/:id", v1.GetArticleInfo)
 		router.GET("category", v1.GetCategory)
+		router.GET("category/:id", v1.GetCategoryInfo)
 		router.POST("login", v1.Login)
+		//获得个人信息
+		router.GET("profile/:id", v1.GetProfile)
 	}
 	r.Run(":3000")
 

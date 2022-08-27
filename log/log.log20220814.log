@@ -1,1 +1,0 @@
-time="2022-08-14 23:41:22" level=info Agent=PostmanRuntime/7.29.2 DataSize=191 HostName=DESKTOP-PSG3PI7 IP="::1" Method=POST Path=/api/v1/login SpendTime="79 ms" status=200

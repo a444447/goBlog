@@ -25,6 +25,19 @@ func CheckUser(name string) (code int) {
 	return errmsg.SUCCESS
 }
 
+// CheckUpUser 允许修改用户的时候不修改名字, 并且如果修改的名字已经存在报错
+func CheckUpUser(id int, name string) int {
+	var user User
+	db.Select("id").Where("username = ?", name).First(&user)
+	if user.ID == uint(id) {
+		return errmsg.SUCCESS
+	}
+	if user.ID > 0 {
+		return errmsg.ErrorUsernameUsed
+	}
+	return errmsg.SUCCESS
+}
+
 // CreateUser 新增用户
 func CreateUser(data *User) int {
 	data.Password = BcryptPassword([]byte(data.Password))
@@ -35,12 +48,23 @@ func CreateUser(data *User) int {
 	return errmsg.SUCCESS
 }
 
+// GetSingleUser 查询单个用户
+func GetSingleUser(id int) (User, int) {
+	var user User
+	err := db.Where("ID = ?", id).First(&user).Error
+	if err != nil {
+		return user, errmsg.ERROR
+	}
+	return user, errmsg.SUCCESS
+}
+
 // GetUsers 查询用户列表
-func GetUsers(pageSize, pageNum int) ([]User, int64) {
+func GetUsers(userName string, pageSize, pageNum int) ([]User, int64) {
 	var users []User
 	var CurPageSize int
 	var CurOffSet int
 	var total int64
+
 	//判断输入的pageSize是否为0,为0表示解除limit的限制，也就是设置-1
 	if pageSize > 0 {
 		CurPageSize = pageSize
@@ -53,7 +77,12 @@ func GetUsers(pageSize, pageNum int) ([]User, int64) {
 	} else {
 		CurOffSet = -1
 	}
-	err = db.Limit(CurPageSize).Offset(CurOffSet).Find(&users).Offset(-1).Limit(-1).Count(&total).Error
+	if userName == "" {
+		err = db.Limit(CurPageSize).Offset(CurOffSet).Find(&users).Offset(-1).Limit(-1).Count(&total).Error
+	} else {
+		err = db.Where("username LIKE ?", userName+"%").Limit(CurPageSize).Offset(CurOffSet).Find(&users).Offset(-1).Limit(-1).Count(&total).Error
+	}
+
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, 0
 	}
@@ -105,7 +134,7 @@ func EditUser(id int, data *User) (code int) {
 	return errmsg.SUCCESS
 }
 
-// CheckLogin 登录严重
+// CheckLogin 登录验证
 func CheckLogin(username, password string) int {
 	var users User
 	db.Where("username = ?", username).First(&users)
